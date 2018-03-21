@@ -32,7 +32,9 @@ app.use(session({
   	cookie: { secure: false }
 }));
 app.use(express.static(__dirname + '/public/'));
-app.use('/bower_components', express.static(path.join(__dirname, '/../bower_components')))
+app.use('/bower_components', express.static(path.join(__dirname, '/../bower_components')));
+app.use('/vendor', express.static(path.join(__dirname, '/../vendor')));
+app.use('/assets', express.static(path.join(__dirname, '/../assets')));
 
 app.get('/error', (req, res) => {
 	res.sendFile(__dirname + '/public/html/information.html');
