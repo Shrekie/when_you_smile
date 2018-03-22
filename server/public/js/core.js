@@ -34,10 +34,10 @@ app.factory('apiService', function($http, $q) {
 
 });
 
-app.factory('videoCapture', function() {
+app.factory('videoCapture', function($timeout) {
 
 	return{
-		saveVideo:(assetSources)=>{
+		saveVideo:(assetSources, done)=>{
 
 			var canvas = assetSources.canvas.original;
 			var video = assetSources.video.original;
@@ -54,10 +54,8 @@ app.factory('videoCapture', function() {
 				if (event.data && event.data.size > 0) {
 					recordedBlobs.push(event.data);
 				}
-				if(video.currentTime >= 24){
-					mediaRecorder.stop();
-				}
 			}
+
 			mediaRecorder.onstop = function (event){
 				console.log("It stopped yo.")
 				var blob = new Blob(recordedBlobs, {type: 'video/webm'});
@@ -70,9 +68,17 @@ app.factory('videoCapture', function() {
 				a.click();
 			}
 
+
 			video.currentTime = 0;
 			video.play();
 			mediaRecorder.start(100); 
+
+			//Todo: Handle the start and end recording better
+			$timeout(function(){ 
+				mediaRecorder.stop();
+				newStream.getTracks().forEach(track => track.stop());
+				done();
+			}, 24000);
 
 		}
 	}
@@ -141,7 +147,7 @@ app.factory('seriouslyInterface', function() {
 			seriously.assetSources.canvas = seriously.target('#canvas');
 
 			seriously.go(function(now){
-				console.log(video.original.currentTime);
+				//console.log(video.original.currentTime);
 				if(video.original.currentTime > 0 && video.original.currentTime < 9.4){
 					image.source = '#targetPicture';
 				}
@@ -167,6 +173,8 @@ app.factory('seriouslyInterface', function() {
 app.controller('mainController', function($scope, 
 	apiService, seriouslyInterface, videoCapture) {
 
+	$scope.playBackCtrl = {recording:false};
+
 	apiService.getUser().then((response)=>{
 		$scope.user = response.data;
 		console.log($scope.user);
@@ -179,8 +187,15 @@ app.controller('mainController', function($scope,
 		seriouslyInterface.constructComposition();
 
 		$scope.playDemo = seriouslyInterface.playDemo;
+
 		$scope.saveVideo = function(){
-			videoCapture.saveVideo(seriouslyInterface.assetSources);
+
+			$scope.playBackCtrl.recording = true;
+
+			videoCapture.saveVideo(seriouslyInterface.assetSources,function(){
+				$scope.playBackCtrl.recording = false;
+			});
+			
 		}
 
 	}

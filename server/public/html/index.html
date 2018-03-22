@@ -41,13 +41,11 @@
                     <img id="targetPicture2" src="/assets/smile2.jpg" alt="Smiles" width="1280" height="720">
                     <img id="targetPicture3" src="/assets/smile3.jpg" alt="Smiles" width="1280" height="720">
                     <canvas id="canvas" width="1280" height="720"></canvas>
-                    <div class="btn-group" role="group" aria-label="controls">
+                    <div ng-show="!playBackCtrl.recording" class="btn-group" role="group" aria-label="controls">
                         <button ng-click="playDemo()" type="button" class="btn btn-default">Play</button>
                         <button type="button" class="btn btn-default">Share</button>
                         <button ng-click="saveVideo()" type="button" class="btn btn-default">Save</button>
                     </div>
-                    <video src="" autoplay id="recordedVideo" width="1280" height="720">
-                    </video>
                     <p>{{user}}</p>
                 </div>
             </div>
