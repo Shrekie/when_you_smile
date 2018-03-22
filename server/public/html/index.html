@@ -10,25 +10,6 @@
         <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
         <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-        <!-- Remove Facebook suffix. -->
-        <script type="text/javascript">
-            if (window.location.hash && window.location.hash == '#_=_') {
-                if (window.history && history.pushState) {
-                    window.history.pushState("", document.title, window.location.pathname);
-                } else {
-                    // Prevent scrolling by storing the page's current scroll offset
-                    var scroll = {
-                        top: document.body.scrollTop,
-                        left: document.body.scrollLeft
-                    };
-                    window.location.hash = '';
-                    // Restore the scroll offset, should be flicker free
-                    document.body.scrollTop = scroll.top;
-                    document.body.scrollLeft = scroll.left;
-                }
-            }
-        </script>
-
         <!-- Seriously.js -->
         <script src="vendor/seriously.js"></script>
         <script src="vendor/seriously.chroma.js"></script>
@@ -49,20 +30,27 @@
     </head>
 
     <body ng-controller="mainController">
-
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                        <video id="targetVideo" width="1280" height="720" controls>
-                                <source src="/assets/precious_template.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                        </video>
-                        <canvas id="canvas" width="1280" height="720"></canvas>
-                        <img id="targetPicture" src="/assets/smile.jpg" alt="Smiles" width="1280" height="720">
-                    <p>{{user.profileID}}</p>
+                    <video style="display:none" id="targetVideo" width="1280" height="720" controls>
+                            <source src="/assets/precious_template.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                    </video>
+                    <img id="targetPicture" src="/assets/smile.jpg" alt="Smiles" width="1280" height="720">
+                    <img id="targetPicture2" src="/assets/smile2.jpg" alt="Smiles" width="1280" height="720">
+                    <img id="targetPicture3" src="/assets/smile3.jpg" alt="Smiles" width="1280" height="720">
+                    <canvas id="canvas" width="1280" height="720"></canvas>
+                    <div class="btn-group" role="group" aria-label="controls">
+                        <button ng-click="playDemo()" type="button" class="btn btn-default">Play</button>
+                        <button type="button" class="btn btn-default">Share</button>
+                        <button ng-click="saveVideo()" type="button" class="btn btn-default">Save</button>
+                    </div>
+                    <video src="" autoplay id="recordedVideo" width="1280" height="720">
+                    </video>
+                    <p>{{user}}</p>
                 </div>
             </div>
         </div>
-
     </body>
 </html>

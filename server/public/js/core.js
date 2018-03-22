@@ -1,5 +1,6 @@
 var app = angular.module('nodeBoiler', ['ngRoute']);
 
+
 app.config(function($locationProvider, $routeProvider) {
 	$locationProvider.html5Mode(true);
 	$routeProvider
@@ -12,7 +13,10 @@ app.config(function($locationProvider, $routeProvider) {
 	.otherwise({ redirectTo: '/' });
 });
 
+
+
 app.factory('apiService', function($http, $q) {
+
     return{
         getUser:() => {
             var deferred = $q.defer();
@@ -26,32 +30,103 @@ app.factory('apiService', function($http, $q) {
             });
             return deferred.promise;
         }
-    }
+	}
+
+});
+
+app.factory('videoCapture', function() {
+
+	return{
+		saveVideo:(assetSources)=>{
+
+			var canvas = assetSources.canvas.original;
+			var video = assetSources.video.original;
+			var canvasStream = canvas.captureStream(30);
+			var inputStream = video.captureStream(30);
+
+			var options = {mimeType: 'video/webm'};
+			var recordedBlobs = [];
+			var newStream = new MediaStream();
+			newStream.addTrack(inputStream.getAudioTracks()[0]);
+			newStream.addTrack(canvasStream.getVideoTracks()[0]);
+			mediaRecorder = new MediaRecorder(newStream, options);
+			mediaRecorder.ondataavailable = function (event) {
+				if (event.data && event.data.size > 0) {
+					recordedBlobs.push(event.data);
+				}
+				if(video.currentTime >= 24){
+					mediaRecorder.stop();
+				}
+			}
+			mediaRecorder.onstop = function (event){
+				console.log("It stopped yo.")
+				var blob = new Blob(recordedBlobs, {type: 'video/webm'});
+				var url = window.URL.createObjectURL(blob);
+				var a = document.createElement('a');
+				a.style.display = 'none';
+				a.href = url;
+				a.download = 'test.webm';
+				document.body.appendChild(a);
+				a.click();
+			}
+
+			video.currentTime = 0;
+			video.play();
+			mediaRecorder.start(100); 
+
+		}
+	}
 });
 
 app.factory('seriouslyInterface', function() {
-    return{
-        doThing:() => {
-			var seriously, // the main object that holds the entire composition
-			picture, // a wrapper object for our source image
-			video; // a wrapper object for our target canvas
 
-			seriously = new Seriously();
+	var seriously // the main object that holds the entire composition
+	seriously = new Seriously();
+	seriously.assetSources = {};
+
+    return{
+		checkCompatability:()=>{
+
+			var msg = '', status = seriously.incompatible();
+
+			if (status) {
+
+			if (status === 'canvas') {
+				msg = 'Your browser does not support HTML Canvas. Please consider upgrading.';
+			} else if (status === 'webgl') {
+				msg = 'Your browser does not support WebGL. Please try Firefox or Chrome.';
+			} if (status === 'context') {
+				msg = 'Your graphics hardware does not support WebGL. You may need to upgrade your drivers.';
+			} else {
+				msg = 'Unable to display content.'; //unknown error
+			}
+				alert(msg);
+				return false;
+			} else {
+				return true;
+			}
+				
+		},
+        constructComposition:() => {
+
+			var picture, // a wrapper object for our source image
+			video; // a wrapper object for our target canvas
 			target = seriously.target('#canvas');
 
 			// Create a source object by passing a CSS query string.
 			video = seriously.source('#targetVideo');
 			reformat = seriously.transform('reformat');
+			reformat.source = '#targetPicture';
 			reformat.width = target.width;
 			reformat.height = target.height;
-			reformat.mode = '#mode';
-			reformat.source = '#targetPicture';
+			reformat.mode = 'distort';
 			image = reformat;
 			// now do the same for the target canvas
 
 
 			chroma = seriously.effect('chroma');
 			blend = seriously.effect('blend');
+
 			chroma.source = video;
 			chroma.screen = [6 / 255, 255 / 255, 0 / 255, 1]
 
@@ -62,13 +137,35 @@ app.factory('seriouslyInterface', function() {
 
 			target.source = blend;
 
-			seriously.go();
+			seriously.assetSources.video = video;
+			seriously.assetSources.canvas = seriously.target('#canvas');
 
-        }
+			seriously.go(function(now){
+				console.log(video.original.currentTime);
+				if(video.original.currentTime > 0 && video.original.currentTime < 9.4){
+					image.source = '#targetPicture';
+				}
+				if(video.original.currentTime > 9.4 && video.original.currentTime < 16.8){
+					image.source = '#targetPicture2';
+				}
+				if(video.original.currentTime > 17){
+					image.source = '#targetPicture3';
+				}
+			});
+
+		},
+		playDemo:()=>{
+			console.log("play");
+			video = seriously.assetSources.video.original;
+			video.currentTime = 0;
+			video.play();
+		},
+		assetSources:seriously.assetSources
     }
 });
 
-app.controller('mainController', function($scope, apiService, seriouslyInterface) {
+app.controller('mainController', function($scope, 
+	apiService, seriouslyInterface, videoCapture) {
 
 	apiService.getUser().then((response)=>{
 		$scope.user = response.data;
@@ -77,6 +174,14 @@ app.controller('mainController', function($scope, apiService, seriouslyInterface
 		console.log(e);
 	})
 
-	seriouslyInterface.doThing();
+	if(seriouslyInterface.checkCompatability()){
 
+		seriouslyInterface.constructComposition();
+
+		$scope.playDemo = seriouslyInterface.playDemo;
+		$scope.saveVideo = function(){
+			videoCapture.saveVideo(seriouslyInterface.assetSources);
+		}
+
+	}
 });
