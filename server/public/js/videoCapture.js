@@ -25,9 +25,7 @@ app.factory('videoCapture', function($timeout, $interval) {
 				var blob = new Blob(recordedBlobs, {type: 'video/webm'});
 				var url = window.URL.createObjectURL(blob);
 				var downloadLink = document.createElement("a");
-				if ("download" in downloadLink){
-					downloadLink.download = 'test.webm';
-				}
+				downloadLink.download = 'test.webm';
 				downloadLink.style.display = 'none';
 				downloadLink.href = url;
 				document.body.appendChild(downloadLink);
