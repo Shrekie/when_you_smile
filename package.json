@@ -5,6 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
+    "postinstall": "./node_modules/bower/bin/bower install",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js"
   },
   "engines": {
@@ -15,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "bower": "^1.8.2",
     "express": "^4.15.3",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.29",
