@@ -23,6 +23,7 @@
 }
   
 body{
+    background-color: pink;
     background-image: url(../assets/emojiBackground.png), 
     linear-gradient(to bottom right, #ff69b496, #ff14939e);
 }
