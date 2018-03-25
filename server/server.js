@@ -26,9 +26,10 @@ app.get('/error', (req, res) => {
 // register application routes
 app.use(application);
 
-app.get('/*', (req, res) => {
-	res.sendFile(__dirname + '/public/html/index.html');
-})
+app.all('/*', function(req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile('/public/html/index.html', { root: __dirname });
+});
 
 app.listen(process.env.PORT, () => {
 	console.log('Started on port ', process.env.PORT);
