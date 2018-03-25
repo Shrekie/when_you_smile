@@ -24,12 +24,14 @@ app.factory('videoCapture', function($timeout, $interval) {
 				console.log("It stopped yo.")
 				var blob = new Blob(recordedBlobs, {type: 'video/webm'});
 				var url = window.URL.createObjectURL(blob);
-				var a = document.createElement('a');
-				a.text = "download";
-				a.href = url;
-				a.download = 'test.webm';
-				document.body.appendChild(a);
-				//a.click();
+				var downloadLink = document.createElement("a");
+				if ("download" in downloadLink){
+					downloadLink.download = 'test.webm';
+				}
+				downloadLink.style.display = 'none';
+				downloadLink.href = url;
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
 			}
 
 
