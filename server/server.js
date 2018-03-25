@@ -19,6 +19,11 @@ app.use('/bower_components', express.static(path.join(__dirname, '/../bower_comp
 app.use('/vendor', express.static(path.join(__dirname, '/../vendor')));
 app.use('/assets', express.static(path.join(__dirname, '/../assets')));
 
+app.all('/*', function(req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile('/public/html/index.html', { root: __dirname });
+});
+
 app.get('/error', (req, res) => {
 	res.sendFile(__dirname + '/public/html/information.html');
 });
@@ -26,10 +31,7 @@ app.get('/error', (req, res) => {
 // register application routes
 app.use(application);
 
-app.all('/*', function(req, res, next) {
-    // Just send the index.html for other files to support HTML5Mode
-    res.sendFile('/public/html/index.html', { root: __dirname });
-});
+
 
 app.listen(process.env.PORT, () => {
 	console.log('Started on port ', process.env.PORT);
