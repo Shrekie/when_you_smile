@@ -1,0 +1,62 @@
+.thumbnail img { width:300px!important; height:180px!important; }
+
+.mainContainer{
+    margin-top: 20px;
+}
+
+#canvasRenderStage{
+    width:100%;
+    border-radius: 25px;
+}
+
+.uploadImage{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#playBackControls a{
+    font-size: 30px;
+}
+
+.playBackControls{
+    margin-bottom: 20px;
+}
+  
+body{
+    background-image: url(../assets/emojiBackground.png), 
+    linear-gradient(to bottom right, #ff69b496, #ff14939e);
+}
+
+.previewBox{
+    padding-top:20px;
+    background-color: #0000005e;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+}
+
+.imageContainer{
+    margin-top:50px;
+}
+
+.progressBarSaving{
+    margin-bottom: 0px;
+    height: 35px;
+}
+
+.progressBarSaving .progress-bar{
+    padding-top:7px;
+    font-size: 15px;
+    font-weight: 1000;
+    color:yellow;
+}
+
+.renderContainer{
+    margin: 0;
+    padding: 0;
+}
+
+.headerText, .descriptionText{
+    font-weight: 1000;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}

@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+//var mongoose = require('mongoose');
 
 var env = process.env.NODE_ENV || 'development';
 
@@ -16,5 +16,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.dbURI,{
 	useMongoClient: true
 });
-*/
+
 module.exports = {mongoose};
+
+*/
