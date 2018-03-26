@@ -46,11 +46,11 @@
         <input id="uploadImage" style="display: none;" type="file" accept="image/*" />
         <div class="container mainContainer">
             <div class="container renderContainer">
-                <div class="row">
-                        <div class="col-md-12">
+                <div class="row center">
+                        <div class="col-md-8 col-md-offset-2">
                             <canvas id="canvasRenderStage" width="1280" height="720"></canvas>
                         </div>
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-8 col-md-offset-2 text-center">
                                 <div id="playBackControls" ng-show="!playBackCtrl.recording" class="btn-group btn-group-justified" role="group" aria-label="controls">
                                     <a ng-click="playDemo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
                                     <a ng-click="saveVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></a>
