@@ -1,7 +1,7 @@
 app.factory('videoCapture', function($timeout, $interval) {
 
 	return{
-		saveVideo:(assetSources, done)=>{
+		saveVideo:(assetSources, openFile, done)=>{
 
 			var canvas = assetSources.canvas.original;
 			var video = assetSources.video.original;
@@ -24,12 +24,16 @@ app.factory('videoCapture', function($timeout, $interval) {
 				console.log("It stopped yo.")
 				var blob = new Blob(recordedBlobs, {type: 'video/webm'});
 				var url = window.URL.createObjectURL(blob);
-				var downloadLink = document.createElement("a");
-				downloadLink.download = 'test.webm';
-				downloadLink.style.display = 'none';
-				downloadLink.href = url;
-				document.body.appendChild(downloadLink);
-				downloadLink.click();
+				done(blob);
+				if(openFile){
+					var downloadLink = document.createElement("a");
+					downloadLink.download = 'test.webm';
+					downloadLink.style.display = 'none';
+					downloadLink.href = url;
+					console.log(url);
+					document.body.appendChild(downloadLink);
+					downloadLink.click();
+				}
 			}
 
 
@@ -53,7 +57,6 @@ app.factory('videoCapture', function($timeout, $interval) {
 				$('.progress-bar').css('width', 0 + '%');
 				$('.progress-bar').text('0%');
 				$interval.cancel(interval);
-				done();
 			}, 24000);
 
 		}

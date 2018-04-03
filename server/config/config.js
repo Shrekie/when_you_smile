@@ -1,16 +1,16 @@
-//var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 var env = process.env.NODE_ENV || 'development';
 
 if(env === 'development'){
 	process.env.PORT = 3000;
-	//process.env.dbURI = 'mongodb://localhost:27017/UserApp';
+	process.env.dbURI = 'mongodb://localhost:27017/UserApp';
 }else if(env === 'test'){
 	process.env.PORT = 3000;
-	//process.env.dbURI = 'mongodb://localhost:27017/UserAppTest';
+	process.env.dbURI = 'mongodb://localhost:27017/UserAppTest';
 }
 
-/*
+
 mongoose.Promise = global.Promise;
 
 mongoose.connect(process.env.dbURI,{
@@ -19,4 +19,3 @@ mongoose.connect(process.env.dbURI,{
 
 module.exports = {mongoose};
 
-*/

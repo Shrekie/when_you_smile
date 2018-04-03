@@ -19,6 +19,11 @@
     </head>
 
     <body>
-        <p>Something happened :( ?</p>
+        <p>Logging in..</p>
     </body>
+    <script>
+        $( document ).ready(function() {
+            window.opener.postMessage("this window has loaded",'*');
+        });
+    </script>
 </html>
