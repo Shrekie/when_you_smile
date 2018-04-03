@@ -45,7 +45,7 @@ app.factory('renderingComposition', function() {
 			image = reformat;
 			// now do the same for the target canvas
 
-
+			//FIXME: Transparent images hide chromed overlay.
 			chroma = seriously.effect('chroma');
 			blend = seriously.effect('blend');
 

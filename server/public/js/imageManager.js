@@ -1,5 +1,6 @@
+//TODO: Stricter file type check
+//TODO: Allow upload from external URL
 app.factory('imageManager', function() {
-
     return{
 		uploadImage:(sourceTarget, evt)=>{
             var tgt = evt.target || window.event.srcElement, 

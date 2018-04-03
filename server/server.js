@@ -1,3 +1,5 @@
+//TODO: MORE COMMENTS, CLEAN-UP
+//TODO: Throttle control.
 require('./config/config.js');
 
 // Package imports

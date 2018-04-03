@@ -4,3 +4,4 @@ package-lock.json
 server/config/secrets.js
 certs/
 .vscode/
+uploads/

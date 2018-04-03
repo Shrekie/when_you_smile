@@ -2,7 +2,10 @@ app.factory('videoCapture', function($timeout, $interval) {
 
 	return{
 		saveVideo:(assetSources, openFile, done)=>{
-
+			/*
+				#FIXME: Something wrong in video result.
+				scrolling in raw webm file doesn't immediately allow scrolling through video.
+			*/
 			var canvas = assetSources.canvas.original;
 			var video = assetSources.video.original;
 			var canvasStream = canvas.captureStream(30);
@@ -26,6 +29,7 @@ app.factory('videoCapture', function($timeout, $interval) {
 				var url = window.URL.createObjectURL(blob);
 				done(blob);
 				if(openFile){
+					//TODO: Destroy video link element
 					var downloadLink = document.createElement("a");
 					downloadLink.download = 'test.webm';
 					downloadLink.style.display = 'none';
@@ -41,7 +45,6 @@ app.factory('videoCapture', function($timeout, $interval) {
 			video.play();
 			mediaRecorder.start(100); 
 
-			//Todo: Handle the start and end recording better
 			var renderTime = 0;
 
 			var interval = $interval(function() {
