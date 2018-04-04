@@ -45,7 +45,7 @@
                 <source src="/assets/precious_template.mp4" type="video/mp4">
                 Your browser does not support the video tag.
         </video>
-        <input id="uploadImage" style="display: none;" type="file" accept="image/*" />
+        <input id="imageUploadInput" style="display: none;" type="file" accept="image/*" />
         <div class="container mainContainer">
             <div class="container renderContainer">
                 <div class="row center">
@@ -53,7 +53,7 @@
                             <canvas id="canvasRenderStage" width="1280" height="720"></canvas>
                         </div>
                         <div class="col-md-8 col-md-offset-2 text-center">
-                                <div id="playBackControls" ng-controller="faceBookVideo" ng-show="!playBackCtrl.recording" class="btn-group btn-group-justified" role="group" aria-label="controls">
+                                <div id="playBackControls" ng-controller="faceBookVideo" ng-show="!playBackCtrl.recording && !playBackCtrl.processing" class="btn-group btn-group-justified" role="group" aria-label="controls">
                                     <a ng-click="playDemo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
                                     <a ng-click="sendVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></a>
                                     <a ng-click="saveVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></a>
@@ -62,10 +62,14 @@
                                     <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
+                                <div class="alert alert-info" role="alert" ng-show="!playBackCtrl.recording && playBackCtrl.processing">
+                                    <a href="#" class="alert-link">Video is processing, please wait...</a>
+                                    <div class="loader"></div>
+                                </div>
                         </div>
                     </div>
             </div>
-            <div ng-show="!playBackCtrl.recording" ng-controller="imagesController" class="container text-center imageContainer">
+            <div ng-show="!playBackCtrl.recording && !playBackCtrl.processing" ng-controller="imagesController" class="container text-center imageContainer">
                     <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <div class="thumbnail previewBox">
@@ -97,5 +101,38 @@
                     </div>
             </div>
         </div>
+          
+        <!-- Modal -->
+        <div ng-controller="imagesController" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <button type="button" ng-click="uploadImage()" class="btn-block">Upload Image</button>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <h4 class="text-center">OR</h4>    
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <input type="text" class="form-control text-center" placeholder="Paste Image URL here" id="URLInput" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <button type="button" ng-click="linkImage()" class="btn btn-block btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- Modal -->
+
     </body>
 </html>

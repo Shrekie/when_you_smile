@@ -33,35 +33,26 @@ app.factory('faceBookApi', function($http, $q, $window) {
 		return deferred.promise;
 	};
 
-    return{
-		sendVideo:(blobData) => {
-			/*
-				#TODO: Display video upload.
+	var sendVideo = function(blobData){
+		var deferred = $q.defer();
+		var fd = new FormData();
+		fd.append('file', blobData);
+		console.log(blobData);
+		console.log(fd);
+		$http.post('/sendVideo', fd,{
+			transformRequest: angular.identity,
+			headers: {'Content-Type': undefined}
+		}).then(function (success) {
+			deferred.resolve(success);
+		}, function (error) {
+			deferred.reject(error);
+		});
+		return deferred.promise;
+	};
 
-				Display to user that video is being uploaded to FaceBook,
-				disable video controls and display message saying its being processed
-				and uploaded. Also notify when its completed.
-				
-			*/
-			var deferred = $q.defer();
-			checkLogin().then((response)=>{
-				var fd = new FormData();
-				fd.append('file', blobData);
-				console.log(blobData);
-				console.log(fd);
-				$http.post('/sendVideo', fd,{
-					transformRequest: angular.identity,
-					headers: {'Content-Type': undefined}
-				}).then(function (success) {
-					deferred.resolve(success);
-				}, function (error) {
-					deferred.reject(error);
-				});
-			},(e)=>{
-				deferred.reject(e);
-			})
-            return deferred.promise;
-		}
+    return{
+		sendVideo,
+		checkLogin
 	}
 
 });

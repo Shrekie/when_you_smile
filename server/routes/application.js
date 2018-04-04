@@ -36,7 +36,7 @@ router.post('/sendVideo', upload.fields([{name: 'file', maxCount: 1}]), (req, re
 			id: req.user.profileID, //The id represent {page_id || user_id || event_id || group_id}
 			stream: fs.createReadStream(req.files.file[0].path), //path to the video,
 			title: "You So Precious When You",
-			description: "make your own https://localhost:3000/ <3"
+			description: "Make your own <3 https://localhost:3000/ <3"
 		};
 		
 		fbUpload(args).then((vres) => {
@@ -50,7 +50,6 @@ router.post('/sendVideo', upload.fields([{name: 'file', maxCount: 1}]), (req, re
 
 			let shareLink = 'https://www.facebook.com/dialog/share?'+
 						    'app_id='+shareLinkParts.app_id+
-							'&redirect_uri='+shareLinkParts.redirect_uri+
 							'&display=page'+
 							'&href='+shareLinkParts.href;
 			
@@ -61,7 +60,7 @@ router.post('/sendVideo', upload.fields([{name: 'file', maxCount: 1}]), (req, re
 				  access_token:req.user.accessToken,
 				  fields:'status'
 				}
-			  };
+			};
 			  
 			waitUntil()
 			.interval(5000)
