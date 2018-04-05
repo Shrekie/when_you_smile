@@ -1,5 +1,3 @@
-//TODO: Stricter file type check
-//TODO: Allow upload from external URL
 app.factory('imageManager', function() {
 
     var uploadImage = function(evt){
@@ -12,7 +10,6 @@ app.factory('imageManager', function() {
                 case 'image/gif':
                 case 'image/jpeg':
                 case 'image/pjpeg':
-                    console.log("wehat")
                     this.cImagePreview.attr('src', URL.createObjectURL(files[0]));
                     $("#myModal").modal('hide');
                     $("#URLInput").val("");
@@ -25,7 +22,7 @@ app.factory('imageManager', function() {
 
     var linkImage = function(imageURL){;
         fetch(imageURL)
-        .then(res => res.blob()) // Gets the response and returns it as a blob
+        .then(res => res.blob())
         .then(blob => {
             switch(blob.type)
             {
@@ -33,7 +30,6 @@ app.factory('imageManager', function() {
                 case 'image/gif':
                 case 'image/jpeg':
                 case 'image/pjpeg':
-                    console.log("wehat")
                     this.cImagePreview.attr('src', URL.createObjectURL(blob));
                     $("#myModal").modal('hide');
                     $("#URLInput").val("");

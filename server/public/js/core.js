@@ -1,13 +1,5 @@
 var app = angular.module('when_you_smile', ['ngRoute']);
 
-/*
-	#TODO: Make clear cut compatibilty check.
-
-	When user opens page, make sure user is 
-	checked to be on latest Chrome and on a computer 
-	for compability.
-*/
-
 app.config(function($locationProvider, $routeProvider) {
 	$locationProvider.html5Mode(true);
 	$routeProvider
@@ -38,8 +30,11 @@ app.controller('faceBookVideo', function($scope, $window,
 			$scope.playBackCtrl.processing = true;
 			faceBookApi.checkLogin().then((response)=>{
 				faceBookApi.sendVideo(blobData).then((response)=>{
-					$window.open(response.data.shareLink);
 					$scope.playBackCtrl.processing = false;
+					if(!response.data.fileError)
+						$window.open(response.data.shareLink);
+					else
+						alert(response.data.fileError);
 				},(e)=>{
 					console.log(e);
 				})
@@ -57,8 +52,10 @@ app.controller('mainController', function($scope, $window,
 	renderingComposition, videoCapture) {
 
 	$scope.playBackCtrl = {recording:false, processing:false};
+	$scope.isBrowserCompatible = false;
 
 	if(renderingComposition.checkCompatability()){
+		$scope.isBrowserCompatible = true;
 
 		renderingComposition.constructComposition();
 
@@ -76,10 +73,9 @@ app.controller('mainController', function($scope, $window,
 			
 		}
 
+	}else{
+		console.log('not on chrome');
 	}
-	$("#canvasRenderStage").click(function(){
-		console.log($scope.playBackCtrl.recording);
-	});
 
 });
 
@@ -88,7 +84,6 @@ app.controller('imagesController', function($scope, imageManager) {
 	$scope.currentImageID = "";
 
 	angular.element('#imageUploadInput').change(function(evt){
-		console.log(imageManager.cImagePreview);
 		imageManager.uploadImage(evt);
 		$(this).val("");
 		newFunction(evt);
@@ -96,7 +91,6 @@ app.controller('imagesController', function($scope, imageManager) {
 
 	angular.element('.imgpreview').click(function(evt){
 		imageManager.cImagePreview = $(this);
-		console.log(imageManager.cImagePreview);
 		$("#myModal").modal();
 		evt.stopImmediatePropagation();
 	})

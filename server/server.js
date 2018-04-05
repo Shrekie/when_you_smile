@@ -36,7 +36,8 @@ app.use('/bower_components', express.static(path.join(__dirname, '/../bower_comp
 app.use('/vendor', express.static(path.join(__dirname, '/../vendor')));
 app.use('/assets', express.static(path.join(__dirname, '/../assets')));
 
-// FIXME: These HTML retrievals need to be streamlined.
+// FIXME: HTML retrievals through template engine.
+// Also for modal.
 app.get('/error', (req, res) => {
 	res.sendFile(__dirname + '/public/html/information.html');
 });

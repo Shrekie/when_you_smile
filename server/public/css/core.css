@@ -24,7 +24,7 @@
 }
 
 body{
-    background-image: url(../assets/emojiBackground.png), 
+    background: url('../assets/emojiBackground.png'), 
     linear-gradient(to bottom right, #ff69b496, #ff14939e);
 }
 
@@ -77,4 +77,12 @@ body{
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+.notCompatibleContainer{
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
 }

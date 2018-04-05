@@ -39,65 +39,77 @@
 
     </head>
 
-    <body ng-controller="mainController">
-        <img style="display:none" id="imageEmpty" src="assets/unused_background.png" alt="Smiles" width="1280" height="720">
-        <video style="display:none" id="targetVideo" width="1280" height="720" controls>
-                <source src="/assets/precious_template.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-        </video>
-        <input id="imageUploadInput" style="display: none;" type="file" accept="image/*" />
-        <div class="container mainContainer">
-            <div class="container renderContainer">
-                <div class="row center">
-                        <div class="col-md-8 col-md-offset-2">
-                            <canvas id="canvasRenderStage" width="1280" height="720"></canvas>
+    <body ng-controller="mainController" ng-cloak="isBrowserCompatible">
+        <div ng-show="isBrowserCompatible">
+            <img style="display:none" id="imageEmpty" src="assets/unused_background.png" alt="Smiles" width="1280" height="720">
+            <video style="display:none" id="targetVideo" width="1280" height="720" controls>
+                    <source src="/assets/precious_template.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+            <input id="imageUploadInput" style="display: none;" type="file" accept="image/*" />
+            <div class="container mainContainer">
+                <div class="container renderContainer">
+                    <div class="row center">
+                            <div class="col-md-8 col-md-offset-2">
+                                <canvas id="canvasRenderStage" width="1280" height="720"></canvas>
+                            </div>
+                            <div class="col-md-8 col-md-offset-2 text-center">
+                                    <div id="playBackControls" ng-controller="faceBookVideo" ng-show="!playBackCtrl.recording && !playBackCtrl.processing" class="btn-group btn-group-justified" role="group" aria-label="controls">
+                                        <a ng-click="playDemo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
+                                        <a ng-click="sendVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></a>
+                                        <a ng-click="saveVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></a>
+                                    </div>
+                                    <div class="progress progressBarSaving" ng-show="playBackCtrl.recording">
+                                        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info" role="alert" ng-show="!playBackCtrl.recording && playBackCtrl.processing">
+                                        <a href="#" class="alert-link">Video is processing, please wait...</a>
+                                        <div class="loader"></div>
+                                    </div>
+                            </div>
                         </div>
-                        <div class="col-md-8 col-md-offset-2 text-center">
-                                <div id="playBackControls" ng-controller="faceBookVideo" ng-show="!playBackCtrl.recording && !playBackCtrl.processing" class="btn-group btn-group-justified" role="group" aria-label="controls">
-                                    <a ng-click="playDemo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
-                                    <a ng-click="sendVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></a>
-                                    <a ng-click="saveVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></a>
-                                </div>
-                                <div class="progress progressBarSaving" ng-show="playBackCtrl.recording">
-                                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                </div>
+                <div ng-show="!playBackCtrl.recording && !playBackCtrl.processing" ng-controller="imagesController" class="container text-center imageContainer">
+                        <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="thumbnail previewBox">
+                                        <img class ="imgpreview" src="assets/unused_background.png" id="targetPicture" alt="Smiles" width="1280" height="720">
+                                        <div class="caption">
+                                            <p class="descriptionText">You so fucking precious when you</p>
+                                            <h3 class="headerText"><i class="em em-hearts"></i>smile<i class="em em-hearts"></i></h3>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="alert alert-info" role="alert" ng-show="!playBackCtrl.recording && playBackCtrl.processing">
-                                    <a href="#" class="alert-link">Video is processing, please wait...</a>
-                                    <div class="loader"></div>
+                                <div class="col-sm-6 col-md-4">
+                                        <div class="thumbnail previewBox">
+                                            <img class ="imgpreview" src="assets/unused_background.png" id="targetPicture2" alt="Wild" width="1280" height="720">
+                                            <div class="caption">
+                                                <p class="descriptionText">Hit it from the back and drive you</p>
+                                                <h3 class="headerText"><i class="em em-hearts"></i>wild<i class="em em-hearts"></i></h3>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                        <div class="thumbnail previewBox">
+                                            <img class ="imgpreview" src="assets/unused_background.png" id="targetPicture3" alt="Eyes" width="1280" height="720">
+                                            <div class="caption">
+                                                <p class="descriptionText">Girl i lose myself up in those</p>
+                                                <h3 class="headerText"><i class="em em-hearts"></i>eyes<i class="em em-hearts"></i></h3>
+                                            </div>
+                                        </div>
                                 </div>
                         </div>
-                    </div>
+                </div>
             </div>
-            <div ng-show="!playBackCtrl.recording && !playBackCtrl.processing" ng-controller="imagesController" class="container text-center imageContainer">
-                    <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <div class="thumbnail previewBox">
-                                    <img class ="imgpreview" src="assets/unused_background.png" id="targetPicture" alt="Smiles" width="1280" height="720">
-                                    <div class="caption">
-                                        <p class="descriptionText">You so fucking precious when you</p>
-                                        <h3 class="headerText"><i class="em em-hearts"></i>smile<i class="em em-hearts"></i></h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                    <div class="thumbnail previewBox">
-                                        <img class ="imgpreview" src="assets/unused_background.png" id="targetPicture2" alt="Wild" width="1280" height="720">
-                                        <div class="caption">
-                                            <p class="descriptionText">Hit it from the back and drive you</p>
-                                            <h3 class="headerText"><i class="em em-hearts"></i>wild<i class="em em-hearts"></i></h3>
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                    <div class="thumbnail previewBox">
-                                        <img class ="imgpreview" src="assets/unused_background.png" id="targetPicture3" alt="Eyes" width="1280" height="720">
-                                        <div class="caption">
-                                            <p class="descriptionText">Girl i lose myself up in those</p>
-                                            <h3 class="headerText"><i class="em em-hearts"></i>eyes<i class="em em-hearts"></i></h3>
-                                        </div>
-                                    </div>
-                            </div>
+        </div>
+
+        <div ng-show="!isBrowserCompatible">
+            <div class="row">
+                    <div class="col-md-8 col-md-offset-2 text-center notCompatibleContainer">
+                        <h3>Your browser is not supported by this application</h3>
+                        <h4>Please use Google Chrome on a PC</h4>
+                        <p>This application uses advanced WebGL, Media Capture and Stream API features</p>
                     </div>
             </div>
         </div>

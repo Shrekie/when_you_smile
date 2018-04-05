@@ -7,7 +7,6 @@ app.factory('faceBookApi', function($http, $q, $window) {
 			url: '/checkLogin'
 		}).then(function (success) {
 			if (success.data.logged){
-				console.log(success.data.logged);
 				deferred.resolve(success);
 			}
 			else{

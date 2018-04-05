@@ -15,7 +15,16 @@ var storage = multer.diskStorage({
 	  cb(null, Date.now() + '.webm')
 	}
 });
-let upload = multer({storage:storage});
+
+let upload = multer({
+	storage:storage,
+	limits: { 
+		fieldNameSize: 255,
+		fileSize: 10000000,
+		files: 1,
+		fields: 1
+	}
+}).single('file');
 
 var router = express.Router();
 
@@ -24,17 +33,19 @@ router.get('/checkLogin', (req, res)=>{
 	else res.json({logged:false});
 });
 
-router.post('/sendVideo', upload.fields([{name: 'file', maxCount: 1}]), (req, res)=>{
+router.post('/sendVideo', (req, res)=>{
 	if(req.isAuthenticated()){
-		//TODO: More file checking.
-		console.log( req.body );
-		console.log( req.files);
-		console.log( req.files.file[0]);
+
+		upload(req,res,function(err) {
+
+		if(err) {
+			return res.json({fileError:'Could not upload file'});
+		}
 		
 		const args = {
-			token: req.user.accessToken, // with the permission to upload
-			id: req.user.profileID, //The id represent {page_id || user_id || event_id || group_id}
-			stream: fs.createReadStream(req.files.file[0].path), //path to the video,
+			token: req.user.accessToken,
+			id: req.user.profileID,
+			stream: fs.createReadStream(req.file.path),
 			title: "You So Precious When You",
 			description: "Make your own <3 https://localhost:3000/ <3"
 		};
@@ -44,7 +55,6 @@ router.post('/sendVideo', upload.fields([{name: 'file', maxCount: 1}]), (req, re
 
 			let shareLinkParts ={
 				href: 'https://www.facebook.com/'+req.user.profileID+'/videos/'+vres.video_id+'/',
-				redirect_uri: 'https://localhost:3000/',
 				app_id: secrets.clientID
 			};
 
@@ -77,16 +87,16 @@ router.post('/sendVideo', upload.fields([{name: 'file', maxCount: 1}]), (req, re
 				res.json({shareLink});
 			});
 
-			fs.unlink(req.files.file[0].path, (err) => {
+			fs.unlink(req.file.path, (err) => {
 				if (err) throw err;
-				console.log('Deletut');
 			});
 
-			//res:  { success: true, video_id: '1838312909759132' }
-		}).catch((e) => {
-			console.error(e);
+			}).catch((e) => {
+				res.json({e});
+			});
+			
 		});
-		
+
 	}
 	else res.json({logged:false});
 });

@@ -19,21 +19,38 @@ app.factory('renderingComposition', function() {
 		} else {
 			msg = 'Unable to display content.'; //unknown error
 		}
-			alert(msg);
 			return false;
-		} else {
+		}
+
+		var isChromium = window.chrome,
+		winNav = window.navigator,
+		vendorName = winNav.vendor,
+		isOpera = winNav.userAgent.indexOf("OPR") > -1,
+		isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+		isIOSChrome = winNav.userAgent.match("CriOS");
+
+		if (isIOSChrome) {
+			return false;
+		} else if (
+		isChromium !== null &&
+		typeof isChromium !== "undefined" &&
+		vendorName === "Google Inc." &&
+		isOpera === false &&
+		isIEedge === false
+		) {
 			return true;
+		} else { 
+			return false;
 		}
 			
 	};
 
 	constructComposition = function(){
 
-		var picture, // a wrapper object for our source image
-		video; // a wrapper object for our target canvas
+		var picture,
+		video;
 		target = seriously.target('#canvasRenderStage');
 
-		// Create a source object by passing a CSS query string.
 		video = seriously.source('#targetVideo');
 		reformat = seriously.transform('reformat');
 
@@ -43,7 +60,6 @@ app.factory('renderingComposition', function() {
 		reformat.height = target.height;
 		reformat.mode = 'distort';
 		image = reformat;
-		// now do the same for the target canvas
 
 		//FIXME: Transparent images hide chromed overlay.
 		chroma = seriously.effect('chroma');
@@ -64,7 +80,7 @@ app.factory('renderingComposition', function() {
 		seriously.assetSources.canvas = seriously.target('#canvasRenderStage');
 
 		seriously.go(function(now){
-			//console.log(video.original.currentTime);
+
 			if(video.original.currentTime > 0 && video.original.currentTime < 9.4){
 				image.source = '#targetPicture';
 			}
@@ -74,12 +90,12 @@ app.factory('renderingComposition', function() {
 			if(video.original.currentTime > 17){
 				image.source = '#targetPicture3';
 			}
+
 		});
 
 	};
 
 	var playDemo = function(){
-		console.log("play");
 		video = seriously.assetSources.video.original;
 		video.currentTime = 0;
 		video.play();
