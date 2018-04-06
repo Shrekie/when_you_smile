@@ -4,7 +4,6 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const bodyParser = require('body-parser');
 
-const secrets = require('./../config/secrets.js');
 const User = require('./../models/user');
 
 // passportjs initialization and strategy call.
@@ -13,8 +12,8 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 passport.use(new FacebookStrategy({
-	clientID: secrets.clientID,
-	clientSecret: secrets.clientSecret,
+	clientID: process.env.clientID,
+	clientSecret: process.env.clientSecret,
 	callbackURL: "/auth/facebook/callback"
 },
 	function(accessToken, refreshToken, profile, done) {

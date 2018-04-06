@@ -3,7 +3,6 @@ var express = require('express');
 const fbUpload = require('facebook-api-video-upload');
 const fs = require('fs');
 let multer = require('multer');
-const secrets = require('./../config/secrets.js');
 const request = require('request-promise'); 
 var waitUntil = require('wait-until');
 
@@ -55,7 +54,7 @@ router.post('/sendVideo', (req, res)=>{
 
 			let shareLinkParts ={
 				href: 'https://www.facebook.com/'+req.user.profileID+'/videos/'+vres.video_id+'/',
-				app_id: secrets.clientID
+				app_id: process.env.clientID
 			};
 
 			let shareLink = 'https://www.facebook.com/dialog/share?'+

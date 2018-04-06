@@ -7,8 +7,6 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-
-const secrets = require('./config/secrets.js');
 const oAuthRoute = require('./routes/facebook_oauth');
 const application = require('./routes/application');
 
@@ -16,7 +14,7 @@ var app = express();
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use(session({ 
-	secret: secrets.sessionSecret,
+	secret: process.env.sessionSecret,
 	resave: true,
   	saveUninitialized: true,
   	cookie: { secure: true }
