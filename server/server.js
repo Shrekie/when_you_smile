@@ -1,10 +1,8 @@
 //TODO: MORE COMMENTS, CLEAN-UP
 //TODO: Throttle control.
-require('./config/config.js');
+var config = require('./config/config.js');
 
 // Package imports
-var https = require('https');
-var fs = require('fs');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -13,13 +11,6 @@ const session = require('express-session');
 const secrets = require('./config/secrets.js');
 const oAuthRoute = require('./routes/facebook_oauth');
 const application = require('./routes/application');
-
-var options = {
-    key: fs.readFileSync(path.join(__dirname, '/../certs/ca.key')),
-    cert: fs.readFileSync(path.join(__dirname, '/../certs/ca.crt')),
-    requestCert: false,
-    rejectUnauthorized: false
-};
 
 var app = express();
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -55,9 +46,13 @@ app.all('/*', function(req, res, next) {
     res.sendFile('/public/html/index.html', { root: __dirname });
 });
 
-var server = https.createServer(options, app).listen(process.env.PORT, function(){
-    console.log("server started at port "+process.env.PORT);
-});
+if(config.env == 'development'){
+	require('./config/development.js').createDevServer(app);
+}else{
+	app.listen(process.env.PORT, '0.0.0.0', () => {
+		console.log('Started on port ', process.env.PORT);
+	});
+}
 
 
 //module.exports = {app};
