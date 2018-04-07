@@ -21,12 +21,6 @@ app.controller('faceBookVideo', function($scope, $window,
 			$scope.playBackCtrl.recording = true;
 			videoCapture.saveVideo(renderingComposition.assetSources, false, function(blobData){
 				$scope.playBackCtrl.recording = false;
-				// FIXME: Processing shows alert shows if FB login window closed.
-				/*
-					If user is not logged into facebook or not
-					added application to their user the processing alert will show
-					even if login window is closed.
-				*/
 				$scope.playBackCtrl.processing = true;
 				faceBookApi.checkLogin().then((response)=>{
 					faceBookApi.sendVideo(blobData).then((response)=>{
@@ -35,7 +29,9 @@ app.controller('faceBookVideo', function($scope, $window,
 							$window.open(response.data.shareLink);
 							var shareLink = document.createElement("a");
 							shareLink.href = response.data.shareLink;
-							shareLink.text = 'Video uploaded to your profile, click here to share';
+							$(shareLink).html('<span class="okbutton glyphicon glyphicon-ok"></span>'+
+							' Video uploaded to your profile, click here to share');
+							shareLink.target = '_blank';
 							$('#shareLinks').html(shareLink);
 						}  
 						else{

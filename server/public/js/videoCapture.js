@@ -30,12 +30,11 @@ app.factory('videoCapture', function($timeout, $interval) {
 			if(openFile){
 				var downloadLink = document.createElement("a");
 				downloadLink.download = 'video.webm';
-				downloadLink.style.display = 'none';
 				downloadLink.href = url;
-				console.log(url);
-				document.body.appendChild(downloadLink);
+				$(downloadLink).html('<span class="okbutton glyphicon glyphicon-ok"></span>'+
+				' Click here to download video');
+				$('#shareLinks').html(downloadLink);
 				downloadLink.click();
-				downloadLink.remove();
 			}
 		};
 
