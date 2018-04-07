@@ -23,10 +23,12 @@
         <link rel="stylesheet" href="/css/core.css">
         <script src="/js/core.js"></script>
 
-        <!-- EMOJIZ -->
+        <!-- EMOJIZ GLYPHICONS -->
         <!-- TODO: Download this. -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/brands.js" integrity="sha384-qJKAzpOXfvmSjzbmsEtlYziSrpVjh5ROPNqb8UZ60myWy7rjTObnarseSKotmJIx" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/fontawesome.js" integrity="sha384-2IUdwouOFWauLdwTuAyHeMMRFfeyy4vqYNjodih+28v2ReC+8j+sLF9cK339k5hY" crossorigin="anonymous"></script>
         <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-
+ 
         <!-- Services -->
         <script src="/js/renderingComposition.js"></script>
         <script src="/js/videoCapture.js"></script>
@@ -56,7 +58,7 @@
                             <div class="col-md-8 col-md-offset-2 text-center">
                                     <div id="playBackControls" ng-controller="faceBookVideo" ng-show="!playBackCtrl.recording && !playBackCtrl.processing" class="btn-group btn-group-justified" role="group" aria-label="controls">
                                         <a ng-click="playDemo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
-                                        <a ng-click="sendVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></a>
+                                        <a ng-click="sendVideo()" type="button" class="btn btn-default"><i class="fab fa-facebook-square" aria-hidden="true"></i></a>
                                         <a ng-click="saveVideo()" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></a>
                                     </div>
                                     <div class="progress progressBarSaving" ng-show="playBackCtrl.recording">

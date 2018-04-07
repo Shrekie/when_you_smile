@@ -25,7 +25,12 @@ app.controller('faceBookVideo', function($scope, $window,
 				faceBookApi.checkLogin().then((response)=>{
 					faceBookApi.sendVideo(blobData).then((response)=>{
 						$scope.playBackCtrl.processing = false;
-						if(!response.data.fileError){
+						if(response.data.e){
+							alert('This app is under review, we cant publish to FaceBook.\n'+
+							'Only test users can publish to Facebook.\n'+
+							'Feel free do download the video using the save button.');
+						}
+						else if(!response.data.fileError){
 							$window.open(response.data.shareLink);
 							var shareLink = document.createElement("a");
 							shareLink.href = response.data.shareLink;
