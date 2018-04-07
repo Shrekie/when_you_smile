@@ -12,6 +12,13 @@ const application = require('./routes/application');
 
 var app = express();
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+function requireHTTPS(req, res, next) {
+    if (!req.secure) {
+        return res.redirect('https://' + req.get('host') + req.url);
+    }
+    next();
+}
+app.use(requireHTTPS);
 
 app.use(session({ 
 	secret: process.env.sessionSecret,
