@@ -89,6 +89,7 @@ router.post('/sendVideo', (req, res)=>{
 
 			fs.unlink(req.file.path, (err) => {
 				if (err) throw err;
+				console.log('unlinked');
 			});
 
 			}).catch((e) => {

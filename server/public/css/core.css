@@ -24,8 +24,7 @@
 }
 
 body{
-    background: url('../assets/emojiBackground.png'), 
-    linear-gradient(to bottom right, #ff69b496, #ff14939e);
+    background-image: url('../assets/emojiBackground.png');
 }
 
 .previewBox{

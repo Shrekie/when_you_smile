@@ -7,19 +7,44 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 const oAuthRoute = require('./routes/facebook_oauth');
 const application = require('./routes/application');
 
 var app = express();
+var store = new MongoDBStore({
+    uri: process.env.MONGO_URL,
+    databaseName: 'when-you-smile',
+    collection: 'mySessions'
+});
+
+store.on('error', function(error) {
+    assert.ifError(error);
+    assert.ok(false);
+});
 
 app.set('trust proxy', true);
 
+app.use(require('express-session')({
+    secret: 'This is a secret',
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store: store,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true }
+}));
+
+/*
+dev
 app.use(session({ 
 	secret: process.env.sessionSecret,
 	resave: true,
   	saveUninitialized: true,
   	cookie: { secure: true }
 }));
+*/
 
 app.use(express.static(__dirname + '/public/'));
 app.use('/bower_components', express.static(path.join(__dirname, '/../bower_components')));
