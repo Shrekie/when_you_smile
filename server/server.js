@@ -4,7 +4,7 @@ var config = require('./config/config.js');
 
 // Package imports
 const express = require('express');
-const secure = require('express-force-https');
+const https = require('https');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -12,7 +12,6 @@ const oAuthRoute = require('./routes/facebook_oauth');
 const application = require('./routes/application');
 
 var app = express();
-app.use(secure);
 
 app.use(session({ 
 	secret: process.env.sessionSecret,
@@ -46,11 +45,15 @@ app.all('/*', function(req, res, next) {
 });
 
 if(config.env == 'development'){
-	require('./config/development.js').createDevServer(app);
+    
+    require('./config/development.js').createDevServer(app);
+    
 }else{
-	app.listen(process.env.PORT, '0.0.0.0', () => {
-		console.log('Started on port ', process.env.PORT);
-	});
+
+    https.createServer(app).listen(process.env.PORT, '0.0.0.0', function(){
+        console.log("Started on port  " + process.env.PORT);
+    });
+    
 }
 
 
