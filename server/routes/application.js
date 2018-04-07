@@ -38,7 +38,8 @@ router.post('/sendVideo', (req, res)=>{
 		upload(req,res,function(err) {
 
 		if(err) {
-			return res.json({fileError:'Could not upload file'});
+			console.log(err);
+			return res.json({fileError: err});
 		}
 		
 		const args = {

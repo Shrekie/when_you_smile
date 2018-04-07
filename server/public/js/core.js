@@ -34,6 +34,7 @@ app.controller('faceBookVideo', function($scope, $window,
 					if(!response.data.fileError)
 						$window.open(response.data.shareLink);
 					else
+						console.log(response.data.fileError);
 						alert(response.data.fileError);
 				},(e)=>{
 					console.log(e);
