@@ -46,8 +46,8 @@ router.post('/sendVideo', (req, res)=>{
 			token: req.user.accessToken,
 			id: req.user.profileID,
 			stream: fs.createReadStream(req.file.path),
-			title: "You So Precious When You",
-			description: "Make your own <3 https://localhost:3000/ <3"
+			title: "When You Smile",
+			description: "Make your own at www.whenyousmile.tlindauer.com"
 		};
 		
 		fbUpload(args).then((vres) => {
