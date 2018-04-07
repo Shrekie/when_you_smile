@@ -22,7 +22,7 @@
         <p>Logging in..</p>
     </body>
     <script>
-        $( window ).load(function() {
+        $(window).on('load',function() {
             window.opener.postMessage("this window has loaded",'*');
         });
     </script>

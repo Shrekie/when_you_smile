@@ -17,32 +17,39 @@ app.controller('faceBookVideo', function($scope, $window,
 
 	$scope.sendVideo = function(){
 
-		$scope.playBackCtrl.recording = true;
-
-		videoCapture.saveVideo(renderingComposition.assetSources, false, function(blobData){
-			$scope.playBackCtrl.recording = false;
-			// FIXME: Processing shows alert shows if FB login window closed.
-			/*
-				If user is not logged into facebook or not
-				added application to their user the processing alert will show
-				even if login window is closed.
-			*/
-			$scope.playBackCtrl.processing = true;
-			faceBookApi.checkLogin().then((response)=>{
-				faceBookApi.sendVideo(blobData).then((response)=>{
-					$scope.playBackCtrl.processing = false;
-					if(!response.data.fileError)
-						$window.open(response.data.shareLink);
-					else
-						console.log(response.data.fileError);
+		faceBookApi.authenticate(function(){
+			$scope.playBackCtrl.recording = true;
+			videoCapture.saveVideo(renderingComposition.assetSources, false, function(blobData){
+				$scope.playBackCtrl.recording = false;
+				// FIXME: Processing shows alert shows if FB login window closed.
+				/*
+					If user is not logged into facebook or not
+					added application to their user the processing alert will show
+					even if login window is closed.
+				*/
+				$scope.playBackCtrl.processing = true;
+				faceBookApi.checkLogin().then((response)=>{
+					faceBookApi.sendVideo(blobData).then((response)=>{
+						$scope.playBackCtrl.processing = false;
+						if(!response.data.fileError){
+							$window.open(response.data.shareLink);
+							var shareLink = document.createElement("a");
+							shareLink.href = response.data.shareLink;
+							shareLink.text = 'Video uploaded to your profile, click here to share';
+							$('#shareLinks').html(shareLink);
+						}  
+						else{
+							console.log(response.data.fileError);
+						}
+					},(e)=>{
+						console.log(e);
+					})
 				},(e)=>{
 					console.log(e);
-				})
-			},(e)=>{
-				console.log(e);
+				});
+	
 			});
 		});
-
 	};
 	
 
