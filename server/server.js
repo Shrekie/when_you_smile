@@ -4,6 +4,7 @@ var config = require('./config/config.js');
 
 // Package imports
 const express = require('express');
+const secure = require('express-force-https');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -11,14 +12,7 @@ const oAuthRoute = require('./routes/facebook_oauth');
 const application = require('./routes/application');
 
 var app = express();
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-function requireHTTPS(req, res, next) {
-    if (!req.secure) {
-        return res.redirect('https://' + req.get('host') + req.url);
-    }
-    next();
-}
-app.use(requireHTTPS);
+app.use(secure);
 
 app.use(session({ 
 	secret: process.env.sessionSecret,

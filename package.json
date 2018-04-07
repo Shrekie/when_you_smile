@@ -17,6 +17,7 @@
     "body-parser": "^1.17.2",
     "bower": "^1.8.2",
     "express": "^4.15.3",
+    "express-force-https": "^1.0.0",
     "express-session": "^1.15.6",
     "facebook-api-video-upload": "^1.4.0",
     "mongodb": "^2.2.29",
