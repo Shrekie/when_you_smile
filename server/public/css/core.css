@@ -1,4 +1,8 @@
-.thumbnail img { width:300px!important; height:180px!important; }
+.thumbnail img { 
+    width:300px!important; 
+    height:180px!important;
+    border-radius: 25px;
+}
 
 .mainContainer{
     margin-top: 20px;
