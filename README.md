@@ -9,4 +9,4 @@ This is mostly possible because of this awesome library: https://github.com/bria
 
 Website does allow the video to be uploaded to Facebook or downloaded.
 
-<img src="https://i.imgur.com/vRskRTq.jpg"/>
+<img src="https://i.imgur.com/P12AzBY.jpg"/>
