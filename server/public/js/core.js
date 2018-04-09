@@ -16,39 +16,41 @@ app.controller('faceBookVideo', function($scope, $window,
 	 faceBookApi, videoCapture, renderingComposition) {
 
 	$scope.sendVideo = function(){
-
 		faceBookApi.authenticate(function(){
 			$scope.playBackCtrl.recording = true;
-			videoCapture.saveVideo(renderingComposition.assetSources, false, function(blobData){
-				$scope.playBackCtrl.recording = false;
-				$scope.playBackCtrl.processing = true;
-				faceBookApi.checkLogin().then((response)=>{
-					faceBookApi.sendVideo(blobData).then((response)=>{
-						$scope.playBackCtrl.processing = false;
-						if(response.data.e){
-							alert('This app is under review, we cant publish to FaceBook.\n'+
-							'Only test users can publish to Facebook.\n'+
-							'Feel free do download the video using the save button.');
-						}
-						else if(!response.data.fileError){
-							$window.open(response.data.shareLink);
-							var shareLink = document.createElement("a");
-							shareLink.href = response.data.shareLink;
-							$(shareLink).html('<span class="okbutton glyphicon glyphicon-ok"></span>'+
-							' Video uploaded to your profile, click here to share');
-							shareLink.target = '_blank';
-							$('#shareLinks').html(shareLink);
-						}  
-						else{
-							console.log(response.data.fileError);
-						}
+			videoCapture.saveVideo(renderingComposition.assetSources, false, function(videoSaveResult){
+				$scope.$apply(function(){
+					$scope.playBackCtrl.recording = false;
+				});
+				if(!videoSaveResult.ruinedVideo){
+					$scope.playBackCtrl.processing = true;
+					faceBookApi.checkLogin().then((response)=>{
+						faceBookApi.sendVideo(videoSaveResult.blob).then((response)=>{
+							$scope.playBackCtrl.processing = false;
+							if(response.data.e){
+								alert('This app is under review, we cant publish to FaceBook.\n'+
+								'Only test users can publish to Facebook.\n'+
+								'Feel free do download the video using the save button.');
+							}
+							else if(!response.data.fileError){
+								$window.open(response.data.shareLink);
+								var shareLink = document.createElement("a");
+								shareLink.href = response.data.shareLink;
+								$(shareLink).html('<span class="okbutton glyphicon glyphicon-ok"></span>'+
+								' Video uploaded to your profile, click here to share');
+								shareLink.target = '_blank';
+								$('#shareLinks').html(shareLink);
+							}  
+							else{
+								console.log(response.data.fileError);
+							}
+						},(e)=>{
+							console.log(e);
+						})
 					},(e)=>{
 						console.log(e);
-					})
-				},(e)=>{
-					console.log(e);
-				});
-	
+					});
+				}
 			});
 		});
 	};

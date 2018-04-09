@@ -41,15 +41,24 @@ router.post('/sendVideo', (req, res)=>{
 			console.log(err);
 			return res.json({fileError: err});
 		}
-		
+
+		try{
+			req.file.path
+		}catch(e){
+			return res.json({fileError:'invalid path'});
+		}
+
+		stream = fs.createReadStream(req.file.path)
+		stream.on('error', function(){ return res.json({fileError:'invalid path'}); });
+
 		const args = {
 			token: req.user.accessToken,
 			id: req.user.profileID,
-			stream: fs.createReadStream(req.file.path),
+			stream: stream,
 			title: "When You Smile",
 			description: "Make your own at www.whenyousmile.tlindauer.com"
 		};
-		
+
 		fbUpload(args).then((vres) => {
 			console.log('res: ', vres);
 

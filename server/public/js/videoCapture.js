@@ -5,12 +5,17 @@ app.factory('videoCapture', function($timeout, $interval) {
 			#FIXME: Something wrong in video result.
 			scrolling in raw webm file doesn't immediately allow scrolling through video.
 		*/
+		var ruinedVideo = false;
+		var recordingVideo = false;
 		var canvas = assetSources.canvas.original;
 		var video = assetSources.video.original;
+
 		var canvasStream = canvas.captureStream(30);
 		var inputStream = video.captureStream(30);
 
-		var options = {mimeType: 'video/webm'};
+		var options = {
+			mimeType: 'video/webm;codecs=h264'
+		};
 		var recordedBlobs = [];
 		var newStream = new MediaStream();
 		newStream.addTrack(inputStream.getAudioTracks()[0]);
@@ -23,16 +28,25 @@ app.factory('videoCapture', function($timeout, $interval) {
 		}
 
 		mediaRecorder.onstop = function (event){
-			console.log("It stopped yo.")
-			var blob = new Blob(recordedBlobs, {type: 'video/webm'});
-			var url = window.URL.createObjectURL(blob);
-			done(blob);
-			if(openFile){
+			if(!ruinedVideo){
+				var blob = new Blob(recordedBlobs, {type: 'video/webm;codecs=h264'});
+				var url = window.URL.createObjectURL(blob);
+				done({blob:blob, ruinedVideo:ruinedVideo});
+				if(openFile){
+					var downloadLink = document.createElement("a");
+					downloadLink.download = 'video.webm';
+					downloadLink.href = url;
+					$(downloadLink).html('<span class="okbutton glyphicon glyphicon-ok"></span>'+
+					' Click here to download video');
+					$('#shareLinks').html(downloadLink);
+					downloadLink.click();
+				}
+			}
+			else{
+				done({blob:undefined, ruinedVideo:ruinedVideo});
 				var downloadLink = document.createElement("a");
-				downloadLink.download = 'video.webm';
-				downloadLink.href = url;
-				$(downloadLink).html('<span class="okbutton glyphicon glyphicon-ok"></span>'+
-				' Click here to download video');
+				$(downloadLink).html('<span class="removebutton glyphicon glyphicon-remove"></span>'+
+				' Window was unfocused, please keep this window open');
 				$('#shareLinks').html(downloadLink);
 				downloadLink.click();
 			}
@@ -52,13 +66,34 @@ app.factory('videoCapture', function($timeout, $interval) {
 			$('.progress-bar').text(Math.floor(percentage) + '%');
 		}, 1000, 24);
 
-		$timeout(function(){ 
+		var stopRecording = function(){
+			video.pause();
+			video.currentTime = 0;
+			video.load();
 			mediaRecorder.stop();
 			newStream.getTracks().forEach(track => track.stop());
 			$('.progress-bar').css('width', 0 + '%');
 			$('.progress-bar').text('0%');
 			$interval.cancel(interval);
+		};
+
+		var stopPlayTimeout = $timeout(function(){ 
+			stopRecording();
+			document.removeEventListener("visibilitychange", visibilityChangeEvent); 
 		}, 24000);
+
+		var visibilityChangeEvent = function(){
+			if(document.hidden && mediaRecorder.state == 'recording') {
+				document.removeEventListener("visibilitychange", visibilityChangeEvent); 
+				ruinedVideo = true;
+				$timeout.cancel(stopPlayTimeout);
+				stopRecording();
+			} else {
+			  // the page is visible
+			}
+		}
+
+		document.addEventListener("visibilitychange", visibilityChangeEvent, {once:true});
 
 	};
 

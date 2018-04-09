@@ -20,6 +20,18 @@ app.factory('renderingComposition', function() {
 			msg = 'Unable to display content.'; //unknown error
 		}
 			return false;
+		}	
+
+		if (Seriously.incompatible('chroma')) {
+			return false;
+		}
+
+		if (Seriously.incompatible('blend')) {
+			return false;
+		}
+
+		if (!MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
+			return false;
 		}
 
 		var isChromium = window.chrome,

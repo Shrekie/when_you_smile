@@ -48,7 +48,7 @@ app.factory('faceBookApi', function($http, $q, $window) {
 			if(event.data == "this window has loaded");
 			loginWindow.close();
 			cb();
-		}, false);
+		}, {once:true});
 
 	};
 
