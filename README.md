@@ -2,6 +2,8 @@
 
 <i>Generates a when you smile meme video</i>
 
+https://whenyousmile.tlindauer.com
+
 Video generation is handled on the client, this includes the image layering, video effects and video encoding.
 Resulting in a website that edits and renders a video directly on the client browser.
 
