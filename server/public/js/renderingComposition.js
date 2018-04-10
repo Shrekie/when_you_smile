@@ -30,7 +30,7 @@ app.factory('renderingComposition', function() {
 			return false;
 		}
 
-		if(!MediaRecorder){
+		if(typeof MediaRecorder === "undefined"){
 			return false;
 		}
 
