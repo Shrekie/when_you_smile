@@ -1,4 +1,4 @@
-# when_you_smile
+# When You Smile
 
 <i>Generates a when you smile meme video</i>
 
