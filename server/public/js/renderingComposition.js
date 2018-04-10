@@ -30,6 +30,10 @@ app.factory('renderingComposition', function() {
 			return false;
 		}
 
+		if(!MediaRecorder){
+			return false;
+		}
+
 		if (!MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
 			return false;
 		}

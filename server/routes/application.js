@@ -56,7 +56,7 @@ router.post('/sendVideo', (req, res)=>{
 			id: req.user.profileID,
 			stream: stream,
 			title: "When You Smile",
-			description: "Make your own at www.whenyousmile.tlindauer.com"
+			description: "Make your own at www.whenyousmile.tlindauer.com 🔊"
 		};
 
 		fbUpload(args).then((vres) => {
