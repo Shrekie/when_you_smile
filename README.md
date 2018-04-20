@@ -1,8 +1,7 @@
 # When You Smile
-<i>Generates a when you smile meme video</i>
-<br>
 <a href="https://snyk.io/test/github/shrekie/when_you_smile?targetFile=package.json"><img src="https://snyk.io/test/github/shrekie/when_you_smile/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/shrekie/when_you_smile?targetFile=package.json" style="max-width:100%;"></a>
 <br>
+<i>Generates a when you smile meme video</i>
 https://whenyousmile.tlindauer.com
 
 Video generation is handled on the client, this includes the image layering, video effects and video encoding.
